@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AJP.ElasticBand.API</name>
+    </assembly>
+    <members>
+        <member name="M:AJP.ElasticBand.API.Controllers.CollectionController.PostRecordToCollection(System.String,System.String,System.Dynamic.ExpandoObject)">
+            <summary>
+            Post a new item or update an existing item in the collection.
+            </summary>
+            <param name="collectionName">The name of the collection to post to</param>
+            <param name="id">The ID of the item to post or update, to add a new Guid, include the string [NewGuid].</param>
+            <param name="payload">Json containing the data to be saved or updated.</param>
+        </member>
+        <member name="M:AJP.ElasticBand.API.Controllers.CollectionController.GetAllRecords(System.String)">
+            <summary>
+            Get all items from the collection.
+            </summary>
+            <param name="collectionName">The name of the collection to get items from.</param>
+        </member>
+        <member name="M:AJP.ElasticBand.API.Controllers.CollectionController.GetRecordById(System.String,System.String)">
+            <summary>
+            Get an item from the collection.
+            </summary>
+            <param name="collectionName">The name of the collection to get an item from.</param>
+            <param name="id">The id of the item to get.</param>
+        </member>
+        <member name="M:AJP.ElasticBand.API.Controllers.CollectionController.GetRecordByQuery(System.String,System.String)">
+            <summary>
+            Find items by query string.
+            </summary>
+            <param name="collectionName">The name of the collection to delete an item from.</param>
+            <param name="query">The query used to find items, asterix(*) for wildcard. Seperate query clauses with ' and '.</param>
+            <remarks>
+            Example query strings:
+            
+            'andrew' (searches whole documents for the string 'andrew')
+            
+            'email:gmail*' (searches document property named 'email' for the strings starting with 'gmail')
+            
+            'email:gmail* and notes:blah' (combine query clauses with ' and ')
+            </remarks>
+        </member>
+        <member name="M:AJP.ElasticBand.API.Controllers.CollectionController.DeleteRecordById(System.String,System.String)">
+            <summary>
+            Delete an item from the collection.
+            </summary>
+            <param name="collectionName">The name of the collection to delete an item from.</param>
+            <param name="id">The id of the item to delete.</param>
+        </member>
+        <member name="M:AJP.ElasticBand.API.Controllers.CollectionsController.Get">
+            <summary>
+            Get all collections
+            </summary>
+        </member>
+        <member name="M:AJP.ElasticBand.API.Controllers.CollectionsController.Get(System.String)">
+            <summary>
+            Get a collection by id/name
+            </summary>
+            <param name="name">The name of the collection</param>
+        </member>
+        <member name="M:AJP.ElasticBand.API.Controllers.CollectionsController.Post(System.String,System.String,System.Dynamic.ExpandoObject)">
+            <summary>
+            Post a new collection or update an existing collection
+            </summary>
+            <param name="name">The name of the collection to save or update</param>
+            <param name="exampleIdPattern">An exmaple Id string 
+            Example: Users|[NewGuid] 
+            This will be prefilled into the id field (in Swagger) when posting instances of items in the collection.</param>
+            <param name="exampleJsonObject">Some json which will be prefilled into the request body (in Swagger) when posting instances of items in the collection.</param>
+        </member>
+        <member name="M:AJP.ElasticBand.API.Controllers.CollectionsController.Delete(System.String)">
+            <summary>
+            Delete a collection, all items in the collection will also be deleted.
+            </summary>
+            <param name="name">The name of the colection to delete.</param>
+        </member>
+    </members>
+</doc>

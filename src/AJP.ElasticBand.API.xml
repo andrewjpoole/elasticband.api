@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AJP.ElasticBand.API</name>
+    </assembly>
+    <members>
+        <member name="M:AJP.ElasticBand.API.Controllers.CollectionController.PostRecordToCollection(System.String,System.String,System.Dynamic.ExpandoObject)">
+            <summary>
+            Post a new item or update an existing item in the collection.
+            </summary>
+            <param name="collectionName">The name of the collection to post to</param>
+            <param name="id">The ID of the item to post or update, to add a new Guid, include the string [NewGuid].</param>
+            <param name="payload">Json containing the data to be saved or updated.</param>
+        </member>
+        <member name="M:AJP.ElasticBand.API.Controllers.CollectionController.GetAllRecords(System.String)">
+            <summary>
+            Get all items from the collection.
+            </summary>
+            <param name="collectionName">The name of the collection to get items from.</param>
+        </member>
+        <member name="M:AJP.ElasticBand.API.Controllers.CollectionController.GetRecordById(System.String,System.String)">
+            <summary>
+            Get an item from the collection.
+            </summary>
+            <param name="collectionName">The name of the collection to get an item from.</param>
+            <param name="id">The id of the item to get.</param>
+        </member>
+        <member name="M:AJP.ElasticBand.API.Controllers.CollectionController.GetRecordByQuery(System.String,System.String,System.Object)">
+            <summary>
+            Find items by query string.
+            </summary>
+            <param name="collectionName">The name of the collection to delete an item from.</param>
+            <param name="search">
+            The simple search query used to find items, asterix(*) for wildcard. 
+            
+            Seperate query clauses with ' and '. 
+            
+            Note, this param is overriden by the query in the body if present.</param>
+            <param name="query">Json query i.e. from kibana request inspector, leave as {} to use the search param instead.</param>
+            <remarks>
+            Example query strings:
+            
+            'andrew' (searches whole documents for the string 'andrew')
+            
+            'email:gmail*' (searches document property named 'email' for the strings starting with 'gmail')
+            
+            'email:gmail* and notes:blah' (combine query clauses with ' and ')
+            
+            An example json query which finds items where a numeric property named age is greater than 38:
+            
+                    {
+                      "version": true,
+                      "size": 500,
+                      "query": {
+                        "bool": {
+                          "filter": [
+                            {
+                              "bool": {
+                                "should": [
+                                  {
+                                    "range": {
+                                      "age": {
+                                        "gt": 38
+                                      }
+                                    }
+                                  }
+                                ],
+                                "minimum_should_match": 1
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }        
+            
+            </remarks>
+        </member>
+        <member name="M:AJP.ElasticBand.API.Controllers.CollectionController.DeleteRecordById(System.String,System.String)">
+            <summary>
+            Delete an item from the collection.
+            </summary>
+            <param name="collectionName">The name of the collection to delete an item from.</param>
+            <param name="id">The id of the item to delete.</param>
+        </member>
+        <member name="M:AJP.ElasticBand.API.Controllers.CollectionsController.Get">
+            <summary>
+            Get all collections
+            </summary>
+        </member>
+        <member name="M:AJP.ElasticBand.API.Controllers.CollectionsController.Get(System.String)">
+            <summary>
+            Get a collection by id/name
+            </summary>
+            <param name="name">The name of the collection</param>
+        </member>
+        <member name="M:AJP.ElasticBand.API.Controllers.CollectionsController.Post(System.String,System.String,System.Dynamic.ExpandoObject)">
+            <summary>
+            Post a new collection or update an existing collection.
+            After creating/updating a collection, refresh the page to update SwaggerUI accordingly.
+            </summary>
+            <param name="name">The name of the collection to save or update</param>
+            <param name="exampleIdPattern">An example Id string </param>
+            <remarks>
+            
+            Examples: 
+            
+            The ExampleIdPattern will be prefilled into the id field (in Swagger) when posting instances of items in the collection.
+            
+            It is only an example for convenience and can be changed to any string value when posting an item.
+            
+            Users|[NewGuid] (when posting, with this IdPattern, the string '[NewGuid]' will be replaced by a new generated Guid)
+            
+            Users|UserName (if you want predictable Ids etc)
+             
+            </remarks>
+            <param name="exampleJsonObject">Some json which will be prefilled into the request body (in Swagger) when posting instances of items in the collection.</param>
+        </member>
+        <member name="M:AJP.ElasticBand.API.Controllers.CollectionsController.Delete(System.String)">
+            <summary>
+            Delete a collection, all items in the collection will also be deleted.
+            </summary>
+            <param name="name">The name of the colection to delete.</param>
+        </member>
+    </members>
+</doc>
