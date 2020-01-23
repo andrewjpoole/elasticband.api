@@ -1,19 +1,14 @@
 using System;
 using System.IO;
-using System.Linq;
+using System.Net.Http;
 using System.Reflection;
-using System.Threading.Tasks;
 using AJP.ElasticBand.API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using AJP.ElasticBand;
 
 namespace AJP.ElasticBand.API
 {
@@ -29,6 +24,7 @@ namespace AJP.ElasticBand.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient();
             services.AddSingleton<IElasticQueryBuilder, ElasticQueryBuilder>();
             services.AddSingleton<IElasticBand, ElasticBand>();
             services.AddSingleton<IElasticRepository<CollectionDefinition>, CollectionDefinitionRepository<CollectionDefinition>>();
@@ -69,6 +65,9 @@ namespace AJP.ElasticBand.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            var elasticsearchUrl = app.ApplicationServices.GetService<IConfiguration>()["elasticsearchUrl"];
+            app.ApplicationServices.GetService<IElasticBand>().SetElasticsearchUrl(elasticsearchUrl);
 
             app.UseHttpsRedirection();
 
