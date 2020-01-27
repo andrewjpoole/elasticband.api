@@ -39,7 +39,7 @@ namespace AJP.ElasticBand.API.Controllers
                 {
                     Request = Request.ToRequestString(),
                     Ok = true,
-                    Result = "Found",
+                    Result = "found",
                     Data = response.Data
                 };
             }
@@ -70,7 +70,7 @@ namespace AJP.ElasticBand.API.Controllers
                 {
                     Request = Request.ToRequestString(),
                     Ok = true,
-                    Result = "Found",
+                    Result = "found",
                     Data = response.Data
                 };
             }
@@ -157,7 +157,7 @@ namespace AJP.ElasticBand.API.Controllers
                 {
                     Request = Request.ToRequestString(),
                     Ok = true,
-                    Result = "Deleted",
+                    Result = "deleted",
                     Data = deleteResponse.Id
                 };
             }
