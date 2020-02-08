@@ -125,23 +125,24 @@ namespace AJP.ElasticBand.API.Controllers
         /// Find items by query string.
         /// </summary>
         /// <param name="collectionName">The name of the collection to delete an item from.</param>
-        /// <param name="search">
-        /// The simple search query used to find items, asterix(*) for wildcard. 
-        /// 
-        /// Seperate query clauses with ' and '. 
-        /// 
-        /// Note, this param is overriden by the query in the body if present.</param>
-        /// <param name="query">Json query i.e. from kibana request inspector, leave as {} to use the search param instead.</param>
+        /// <param name="searchString">A string containing a simple search query, overriden by the query in the body if present.</param>
+        /// <param name="query">A string containing valid Elasticsearch Json query syntax, leave as {} to use the searchString instead.</param>
         /// <remarks>
-        /// Example query strings:
+        /// ## Example query strings:
         /// 
-        /// 'andrew' (searches whole documents for the string 'andrew')
+        /// 'andrew' (searches whole documents for the string 'andrew' optionally use * as wildcard)
+        /// 
+        /// 'age > 10' (simple single greater than or less than query, doesn't work with ' and ')
         /// 
         /// 'email:gmail*' (searches document property named 'email' for the strings starting with 'gmail')
         /// 
         /// 'email:gmail* and notes:blah' (combine query clauses with ' and ')
         /// 
-        /// An example json query which finds items where a numeric property named age is greater than 38:
+        /// ## Example json query 
+        /// 
+        /// This query must be valid Elasticsearch Json query syntax, you can actually get this from Kibana using Inspect->Response
+        /// 
+        /// the following query finds items where a numeric property named age is greater than 38:
         /// 
         ///         {
         ///           "version": true,
@@ -170,7 +171,7 @@ namespace AJP.ElasticBand.API.Controllers
         /// 
         /// </remarks>
         [HttpPost("{collectionName}/query")]
-        public async Task<APIResponse> GetRecordByQuery(string collectionName, string search, [FromBody]object query)
+        public async Task<APIResponse> GetRecordByQuery(string collectionName, string searchString, [FromBody]object query)
         {
             _logger.LogInformation($"GetRecordByQuery request recieved");
 
@@ -181,9 +182,9 @@ namespace AJP.ElasticBand.API.Controllers
             // json query from body should override search string.
             var queryAsString = JsonSerializer.Serialize(query);
             if (queryAsString != "{}")
-                search = queryAsString;
+                searchString = queryAsString;
 
-            var response = await _elasticBand.Query<object>(collection.Index, search).ConfigureAwait(false);
+            var response = await _elasticBand.Query<object>(collection.Index, searchString).ConfigureAwait(false);
             if (response.Ok)
                 return new APIResponse
                 {
