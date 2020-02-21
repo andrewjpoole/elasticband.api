@@ -32,6 +32,11 @@ namespace AJP.ElasticBand.API.Controllers
 
             var response = await _collectionRepository.Query("").ConfigureAwait(false);
 
+            foreach (var item in response.Data)
+            { 
+                item.ExampleJsonObject = JsonSerializer.Deserialize<object>(item.ExampleJsonObjectString);
+            }
+
             if (response.Ok)
             {
                 _logger.LogInformation($"fetched all {response.Data.Count} collection(s)");

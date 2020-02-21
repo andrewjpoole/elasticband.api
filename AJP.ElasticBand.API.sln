@@ -5,6 +5,12 @@ VisualStudioVersion = 16.0.29505.145
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AJP.ElasticBand.API", "src\AJP.ElasticBand.API.csproj", "{01934644-16BF-46A2-8689-57BF548A446F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F27333CE-87D5-4D91-A812-67E133463224}"
+	ProjectSection(SolutionItems) = preProject
+		ExternalComponentLicenses.md = ExternalComponentLicenses.md
+		readme.md = readme.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

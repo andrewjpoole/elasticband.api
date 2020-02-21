@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>AJP.ElasticBand.API</name>
+        <name>ElasticBand.API</name>
     </assembly>
     <members>
         <member name="M:AJP.ElasticBand.API.Controllers.CollectionController.PostRecordToCollection(System.String,System.String,System.Dynamic.ExpandoObject)">
@@ -9,8 +9,17 @@
             Post a new item or update an existing item in the collection.
             </summary>
             <param name="collectionName">The name of the collection to post to</param>
-            <param name="id">The ID of the item to post or update, to add a new Guid, include the string [NewGuid].</param>
-            <param name="payload">Json containing the data to be saved or updated.</param>
+            <param name="id">The ID of the item to post or update, include the string [NewGuid] to index a freshly generated Guid.</param>
+            <param name="payload">Json containing the data to be saved or updated.
+            
+            The Id will be included in the payload object.
+            
+            A timestamp will also be added to the payload object, using UTC.
+            
+            If the payload object contains a property named "passwordToHash" 
+            it will be replaced before indexing with a property named "hashedPassword" 
+            containing a cryptographically secure has of the supplied value.
+            </param>
         </member>
         <member name="M:AJP.ElasticBand.API.Controllers.CollectionController.GetAllRecords(System.String)">
             <summary>

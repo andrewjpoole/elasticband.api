@@ -26,6 +26,9 @@ namespace AJP.ElasticBand.API
 
             var collectionDefinitions = GetCollections().Result;
 
+            if (collectionDefinitions == null)
+                return;
+
             foreach (var collectionDefinition in collectionDefinitions)
             {
                 var tag = new OpenApiTag
@@ -51,7 +54,7 @@ namespace AJP.ElasticBand.API
                     
                     if (operation.Key == OperationType.Post)
                     {
-                        operation.Value.RequestBody.Description = $"When posting to {collectionDefinition.Name} the json example will be pre=populated in the body for convenience. A timestamp property will be automatically added if it doesn't exist on the object. The id will also be added to the object automatically.";
+                        operation.Value.RequestBody.Description = $"When posting to {collectionDefinition.Name} the json example will be pre-populated in the body for convenience. \n\n ### Timestamp \n\n A timestamp property will be automatically added if it doesn't exist on the object. \n\n ### Object Id \n\n The id will also be added to the object automatically. \n\n ### Automatic Password Hashing \n\n If the payload object contains a property named 'passwordToHash' it will be replaced (before indexing) with a property named 'hashedPassword' containing a cryptographically secure has of the supplied value. (Argon2-id)";
                         foreach (var content in operation.Value.RequestBody.Content)
                         {
                             content.Value.Example = new OpenApiString($"{collectionDefinition.ExampleJsonObjectString}");

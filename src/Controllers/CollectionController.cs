@@ -5,6 +5,7 @@ using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AJP.ElasticBand.API.Models;
+using Isopoh.Cryptography.Argon2;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -29,8 +30,17 @@ namespace AJP.ElasticBand.API.Controllers
         /// Post a new item or update an existing item in the collection.
         /// </summary>
         /// <param name="collectionName">The name of the collection to post to</param>
-        /// <param name="id">The ID of the item to post or update, to add a new Guid, include the string [NewGuid].</param>
-        /// <param name="payload">Json containing the data to be saved or updated.</param>
+        /// <param name="id">The ID of the item to post or update, include the string [NewGuid] to index a freshly generated Guid.</param>
+        /// <param name="payload">Json containing the data to be saved or updated.
+        /// 
+        /// The Id will be included in the payload object.
+        /// 
+        /// A timestamp will also be added to the payload object, using UTC.
+        /// 
+        /// If the payload object contains a property named "passwordToHash" 
+        /// it will be replaced before indexing with a property named "hashedPassword" 
+        /// containing a cryptographically secure has of the supplied value.
+        /// </param>
         [HttpPost("{collectionName}/{id}")]
         public async Task<APIResponse> PostRecordToCollection(string collectionName, string id, [FromBody]ExpandoObject payload)
         {
@@ -41,14 +51,21 @@ namespace AJP.ElasticBand.API.Controllers
             var payloadDictionary = (IDictionary<String, object>)payload;
             if (!payloadDictionary.ContainsKey("timestamp"))
             {
-                payloadDictionary.Add("timestamp", DateTime.Now);
+                payloadDictionary.Add("timestamp", DateTime.UtcNow);
             }
 
             if (payloadDictionary.ContainsKey("id"))
                 payloadDictionary["id"] = id;
             else
                 payloadDictionary.Add("id", id);
-            
+
+            if (payloadDictionary.ContainsKey("passwordToHash"))
+            {
+                var passwordToHash = payloadDictionary["passwordToHash"].ToString();
+                var hashedPassword = Argon2.Hash(passwordToHash);
+                payloadDictionary.Remove("passwordToHash");
+                payloadDictionary.Add("hashedPassword", hashedPassword);
+            }
 
             var collection = await GetCollection(collectionName).ConfigureAwait(false);
             if (collection == null)
