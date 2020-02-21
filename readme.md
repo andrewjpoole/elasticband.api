@@ -10,6 +10,10 @@ In the screenshot below there is a collection defined named 'users'
 
 ![screenshot](screenshot.png)
 
+[post screenshot](screenshot_post.png)
+
+[query screenshot](screenshot_query.png)
+
 ## License
 
 Feel free to use for whatever - MIT license. If its useful please let me know!
